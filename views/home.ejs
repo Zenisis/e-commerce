@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOFOX Sports Cars</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .hero-section {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-car.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .car-showcase {
+            padding: 50px 20px;
+        }
+
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .car-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .car-info {
+            padding: 20px;
+        }
+
+        .car-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+        }
+
+        .car-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .car-price {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .explore-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #ff4d4d;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            background: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>EVO-CARS</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/Products">Products</a></li>
+                <li><a href="/cart">cart</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Luxury Sports Cars</h1>
+            <p>Experience the thrill of high-performance automotive excellence</p>
+            <a href="/Products" class="explore-btn">Explore Collection</a>
+        </div>
+    </section>
+
+    <section class="car-showcase">
+        <div class="car-grid">
+            <div class="car-card">
+                <img src="/images/car1.jpg" alt="Sports Car 1" class="car-image">
+                <div class="car-info">
+                    <h3>Ferrari F8 Tributo</h3>
+                    <p>710-hp twin-turbo V-8 engine, reaching 60 mph in 2.8 seconds</p>
+                    <span class="car-price">$276,550</span>
+                </div>
+            </div>
+
+            <div class="car-card">
+                <img src="/images/car2.jpg" alt="Sports Car 2" class="car-image">
+                <div class="car-info">
+                    <h3>Lamborghini Huracán</h3>
+                    <p>5.2L V10 engine, 602 hp, all-wheel drive system</p>
+                    <span class="car-price">$208,571</span>
+                </div>
+            </div>
+
+            <div class="car-card">
+                <img src="/images/car3.jpg" alt="Sports Car 3" class="car-image">
+                <div class="car-info">
+                    <h3>Porsche 911 GT3</h3>
+                    <p>4.0L flat-six engine, 502 hp, track-focused performance</p>
+                    <span class="car-price">$161,100</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EVO-CARS Store</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

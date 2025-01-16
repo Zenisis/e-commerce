@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - EVO-CARS</title>
+    <style>
+        .cart-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .cart-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-table th {
+            background: #f8f8f8;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .cart-image {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            padding: 8px 15px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #ff3333;
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            float: right;
+            width: 300px;
+        }
+
+        .cart-summary h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #ff4d4d;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #ff3333;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .empty-cart h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #ff4d4d;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            background: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="cart-container">
+        <h1 class="cart-title">Shopping Cart</h1>
+        
+        <% if (cart && cart.items && cart.items.length > 0) { %>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let subtotal = 0 %>
+                    <% cart.items.forEach(item => { %>
+                        <% const itemTotal = item.product.price * item.quantity %>
+                        <% subtotal += itemTotal %>
+                        <tr>
+                            <td>
+                                <img src="/images/<%= item.product.image %>" alt="<%= item.product.name %>" class="cart-image">
+                            </td>
+                            <td><%= item.product.name %></td>
+                            <td>$<%= item.product.price.toLocaleString() %></td>
+                            <td>
+                                <input type="number" 
+                                       class="quantity-input" 
+                                       value="<%= item.quantity %>" 
+                                       min="1" 
+                                       data-item-id="<%= item._id %>"
+                                       onchange="updateQuantity(this)">
+                            </td>
+                            <td>$<%= itemTotal.toLocaleString() %></td>
+                            <td>
+                                <button class="remove-btn" onclick="removeItem('<%= item._id %>')">Remove</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-line">
+                    <span>Subtotal:</span>
+                    <span>$<%= subtotal.toLocaleString() %></span>
+                </div>
+                <div class="summary-line">
+                    <span>Tax (10%):</span>
+                    <span>$<%= (subtotal * 0.1).toLocaleString() %></span>
+                </div>
+                <div class="summary-line summary-total">
+                    <span>Total:</span>
+                    <span>$<%= (subtotal * 1.1).toLocaleString() %></span>
+                </div>
+                <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+            </div>
+        <% } else { %>
+            <div class="empty-cart">
+                <h2>Your cart is empty</h2>
+                <p>Browse our collection and add some amazing cars to your cart!</p>
+                <a href="/products" class="continue-shopping">Continue Shopping</a>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        async function updateQuantity(input) {
+            const itemId = input.dataset.itemId;
+            const quantity = parseInt(input.value);
+            
+            try {
+                const response = await fetch(`/cart/update/${itemId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity })
+                });
+                
+                if (response.ok) {
+                    location.reload();
+                }
+            } catch (err) {
+                console.error('Error updating quantity:', err);
+            }
+        }
+
+        async function removeItem(itemId) {
+            if (confirm('Are you sure you want to remove this item?')) {
+                try {
+                    const response = await fetch(`/cart/remove/${itemId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        location.reload();
+                    }
+                } catch (err) {
+                    console.error('Error removing item:', err);
+                }
+            }
+        }
+    </script>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

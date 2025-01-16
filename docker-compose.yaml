@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./public:/app/public
+      - ./views:/app/views
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/ecommerce
+      - JWT_SECRET=your_secure_jwt_secret_here  # Change this in production
+    depends_on:
+      - mongo
+    command: npm run dev
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./public:/usr/share/nginx/html
+    depends_on:
+      - app1
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Spare Parts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <h1>Auto Spare Parts</h1>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/products" class="active">Products</a>
+                    <a href="/cart">Cart</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="filters">
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="">All Categories</option>
+                <option value="Engine Parts">Engine Parts</option>
+                <option value="Brake System">Brake System</option>
+                <option value="Suspension">Suspension</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Body Parts">Body Parts</option>
+                <option value="Transmission">Transmission</option>
+                <option value="Filters">Filters</option>
+            </select>
+        </div>
+
+        <div class="product-grid">
+            <% products.forEach(function(product) { %>
+                <div class="product-card" data-category="<%= product.category %>">
+                    <div class="product-image">
+                        <img src="<%= product.image %>" alt="<%= product.name %>">
+                    </div>
+                    <div class="product-info">
+                        <h3><%= product.name %></h3>
+                        <p class="description"><%= product.description %></p>
+                        <div class="specifications">
+                            <p><strong>Manufacturer:</strong> <%= product.specifications.manufacturer %></p>
+                            <p><strong>Part Number:</strong> <%= product.specifications.partNumber %></p>
+                            <p><strong>Warranty:</strong> <%= product.specifications.warranty %></p>
+                        </div>
+                        <div class="product-footer">
+                            <p class="price">$<%= product.price.toFixed(2) %></p>
+                            <% if (product.stock > 0) { %>
+                                <button onclick="addToCart('<%= product._id %>')" class="add-to-cart">
+                                    Add to Cart
+                                </button>
+                            <% } else { %>
+                                <button disabled class="out-of-stock">Out of Stock</button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <script>
+        function filterProducts() {
+            const category = document.getElementById('category-filter').value;
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                if (!category || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
